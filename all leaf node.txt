@@ -1,0 +1,13 @@
+// to find all leaf node
+
+
+void order(node *ro)
+{
+ if(ro!=NULL)
+  {
+    if(ro->l==NULL && ro->r==NULL)
+       printf("%d",ro->data);
+     orde(ro->l);
+    order(ro->r);
+ }
+}

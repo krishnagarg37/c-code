@@ -1,0 +1,19 @@
+main
+{
+    for(int i=1;i<=height;i++)
+    order(root,i);
+
+}
+
+void order(node *root,int he)
+{
+     if(root==NULL)
+    return;
+   if(he==1)
+      printf("%d ",ro->data);
+   if(he>1)
+    {
+       order(root->l,he-1);
+       order(root->r,he-1);
+   } 
+}

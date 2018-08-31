@@ -1,0 +1,184 @@
+#include<stdio.h>
+#include<conio.h>
+
+struct node
+{
+  int data;
+  struct node *l;
+  struct node *r;
+};
+typedef struct node node;
+
+node *root=NULL;
+node *temp=NULL;
+
+node * create(int d)
+{
+  node *ne=(node *)malloc(sizeof(node));
+  ne->data=d;
+  ne->l=NULL;
+  ne->r=NULL;
+  return ne;
+ }
+void insert(node *ne)
+{
+ if(root==NULL)
+    root=ne;
+  else
+   {
+     node *temp=root;
+   while(1)
+   {
+     if(temp->data <= ne->data)
+       {
+	if(temp->r==NULL)
+	  {temp->r=ne;break;}
+	else
+	  temp=temp->r;
+	}
+     else
+     {
+	if(temp->l==NULL)
+	 { temp->l=ne;break;}
+	else
+	  temp=temp->l;
+      }
+   }
+  }
+}
+void inorder(node *ro)
+{
+   if(ro!=NULL)
+    {
+      inorder(ro->l);
+      printf("%d ",ro->data);
+      inorder(ro->r);
+      }
+ }
+int ma;
+int mi;
+void max(node *ro)
+{
+  if(ro!=NULL)
+  {
+     if(ro->data>=ma)
+	{
+	  ma=ro->data;
+	  max(ro->r);
+	}
+  }
+}
+void min(node *ro)
+{
+  if(ro!=NULL)
+  {
+     if(ro->data<=mi)
+	{
+	  mi=ro->data;
+	  min(ro->l);
+	}
+  }
+}
+int height(node *ro)
+{
+  int h1=1,h2=1;
+
+  if(ro==NULL)
+    return 0;
+  else
+   {
+      h1=h1+height(ro->l);
+      h2=h2+height(ro->r);
+
+      if(h1>h2)
+	return h1;
+      else
+	return h2;
+   }
+
+}
+void del(int n,node *ro)
+{
+  node *pa;
+   if(ro!=NULL)
+   {
+     while(ro->data!=n)
+     {  pa=ro;
+	if(ro->data < n)
+	   ro=ro->r;
+	else
+	   ro=ro->l;
+     }
+     printf("child %d parent %d \n",ro->data,pa->data);
+
+     if(ro->r==NULL && ro->l==NULL && pa->data >n)
+      { free(pa->l);
+	pa->l=NULL;
+      }
+     else if(ro->r==NULL && ro->l==NULL && pa->data < n)
+      { free(pa->r);
+	pa->r=NULL;
+      }
+     else if(ro->r!=NULL && ro->l==NULL && pa->data>n)
+	{
+	  node *t=ro->r;
+	  free(pa->l);
+	  pa->l=t;
+
+	  }
+     else if(ro->r!=NULL && ro->l==NULL && pa->data<n)
+	{
+	  node *t=ro->r;
+	  free(pa->r);
+	  pa->r=t;
+
+	  }
+     else if(ro->l!=NULL && ro->r==NULL && pa->data>n)
+	{
+	  node *t=ro->l;
+	  free(pa->l);
+	  pa->l=t;
+
+	  }
+     else if(ro->l!=NULL && ro->r==NULL && pa->data<n)
+	{
+	  node *t=ro->l;
+	  free(pa->r);
+	  pa->r=t;
+
+	  }
+
+     else{}
+
+    }
+ }
+
+void main()
+{
+  int a,h,n;
+  clrscr();
+  printf("Enter the values to enter in tree\n");
+  scanf("%d",&a);
+  while(a!=-1)
+  {
+     node *te=create(a);
+     insert(te);
+     scanf("%d",&a);
+
+  }
+  inorder(root);
+  ma=root->data;
+  mi=root->data;
+  max(root);
+  min(root);
+  printf("\nMax=%d",ma);
+  printf("\nMin=%d",mi);
+  h=height(root);
+  printf("\nHeight=%d",h-1);
+  printf("\nEnter the no you want to delete:");
+  scanf("%d",&n);
+  del(n,root);
+  inorder(root);
+  getch();
+
+}
