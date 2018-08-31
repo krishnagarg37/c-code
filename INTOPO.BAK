@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#define max 20
+char stack[max];
+int top=-1;
+
+void push(char x)
+{
+  if(top==(max-1))
+     printf("overflow of stack");
+  else
+     stack[++top]=x;
+}
+char pop()
+{
+  if(top==-1)
+  { printf("underflow of stack");
+    return -1 ;
+    }
+
+  else
+    {
+      return(stack[top--]);
+    }
+}
+int priority(char x)
+{
+   if(x=='(') return 0;
+   else if(x=='+'|| x=='-') return 1;
+   else if(x=='*'|| x=='/') return 2;
+   else return -1;
+}
+void main()
+{ int i,l,t1,t2;
+  char exp[10];
+  clrscr();
+  printf("Enter the infix expression\n");
+  scanf("%s",exp);
+  l=strlen(exp);
+  exp[l]=')';
+  push('(');
+  for(i=0;i<=l;i++)
+  {
+    if( (exp[i] >=97 && exp[i]<122) ||(exp[i] >=65 && exp[i]<90))
+      {
+	printf("%c",exp[i]);
+      }
+    else if(exp[i]=='(')
+       push(exp[i]);
+    else if(exp[i]==')')
+      { while(stack[top]!='(')
+	  printf("%c",pop());
+	pop();
+
+      }
+    else
+    {  t1=priority(stack[top]);
+       t2=priority(exp[i]);
+      while(t1>t2 && stack[top]!='(')
+	printf("%c",pop());
+      push(exp[i]);
+   }
+  }
+  getch();
+}
+

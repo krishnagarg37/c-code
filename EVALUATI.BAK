@@ -1,0 +1,77 @@
+#include<iostream.h>
+#include<conio.h>
+#define max 20
+#include<string.h>
+
+float stack[max];
+int top=-1;
+void push(float x)
+{
+   if(top==(max-1) )
+     cout<<"Overflow";
+   else
+    {
+       stack[++top]=x;
+    }
+}
+float pop()
+{
+    if(top==-1)
+    { cout<<"Invalid expression";
+     return -1;
+    }
+    else
+     return (stack[top--]);
+}
+
+void main()
+{
+ char a[]={"231*+9-d"};
+ int i,j,p1,p2;
+ float e1,e2,sum;
+ int s=sizeof(a)/sizeof(a[0]);
+  clrscr();
+ s=s-1;
+ for(i=0;i<s;i++)
+ {
+    if(a[i]>='0' && a[i]<='9')
+    {
+      push(a[i]-'0');
+    }
+    else if(a[i]=='*')
+     {
+       e2=pop();
+       e1=pop();
+       push(e1*e2);
+     }
+     else if(a[i]=='+')
+     {
+       e2=pop();
+       e1=pop();
+       sum=e1+e2;
+       push(sum);
+     }
+	else if(a[i]=='-')
+     {
+       e2=pop();
+       e1=pop();
+       push(e1-e2);
+     }
+	else if(a[i]=='/')
+     {
+       e2=pop();
+       e1=pop();
+       push(e1/e2);
+     }
+	else if(a[i]=='^')
+     {
+       p1=pop();
+       p2=pop();
+       push(p2^p1);
+      }
+     else
+     cout<<"Error in expression\n";
+ }
+   cout<<"Value="<<stack[top];
+   getch();
+ }
